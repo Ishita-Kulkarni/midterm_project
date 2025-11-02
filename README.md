@@ -18,6 +18,7 @@ A feature-rich calculator implementation in Python that demonstrates various des
 project_root/
 ├── app/
 │   ├── __init__.py           # Package initialization
+│   └── calc.py               # Advanced calculator functionality
 │   ├── calculator.py         # Main calculator class
 │   ├── calculation.py        # Calculation class
 │   ├── calculator_config.py  # Configuration management

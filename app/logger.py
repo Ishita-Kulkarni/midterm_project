@@ -1,26 +1,16 @@
+# app/logger.py
 import logging
-from datetime import datetime
-from .calculator_config import config
-from .calculation import Calculation
+import os
+from dotenv import load_dotenv
 
-class Logger:
-    def __init__(self):
-        logging.basicConfig(
-            filename=config.log_file_path,
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s'
-        )
-        self.logger = logging.getLogger('calculator')
+load_dotenv()
+LOG_DIR = os.getenv("CALCULATOR_LOG_DIR", "./logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_FILE = os.path.join(LOG_DIR, os.getenv("CALCULATOR_LOG_FILE", "calculator.log"))
 
-    def log_calculation(self, calculation: Calculation):
-        """Log a calculation."""
-        if config.enable_logging:
-            self.logger.info(
-                f"Calculation: {calculation.num1} {calculation.operation.symbol} "
-                f"{calculation.num2} = {calculation.result}"
-            )
-
-    def log_error(self, error_message: str):
-        """Log an error."""
-        if config.enable_logging:
-            self.logger.error(f"Error: {error_message}")
+logger = logging.getLogger("calc")
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler(LOG_FILE, encoding=os.getenv("CALCULATOR_DEFAULT_ENCODING", "utf-8"))
+fmt = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+fh.setFormatter(fmt)
+logger.addHandler(fh)

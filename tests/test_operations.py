@@ -1,26 +1,20 @@
-import unittest
-from app.operations import Addition, Subtraction, Multiplication, Division
+# tests/test_operations.py
+import pytest
+from app.operations import get_operation
+from app.exceptions import OperationError
 
-class TestOperations(unittest.TestCase):
-    def test_addition(self):
-        op = Addition()
-        self.assertEqual(op.execute(2, 3), 5)
-        self.assertEqual(op.symbol, '+')
+@pytest.mark.parametrize("op,a,b,expected", [
+    ("add", 1, 2, 3),
+    ("subtract", 5, 3, 2),
+    ("multiply", 2, 3, 6),
+    ("power", 2, 3, 8),
+    ("abs_diff", 5, 2, 3),
+])
+def test_basic_ops(op, a, b, expected):
+    operation = get_operation(op)
+    assert operation.execute(a, b) == expected
 
-    def test_subtraction(self):
-        op = Subtraction()
-        self.assertEqual(op.execute(5, 3), 2)
-        self.assertEqual(op.symbol, '-')
-
-    def test_multiplication(self):
-        op = Multiplication()
-        self.assertEqual(op.execute(4, 3), 12)
-        self.assertEqual(op.symbol, '*')
-
-    def test_division(self):
-        op = Division()
-        self.assertEqual(op.execute(6, 2), 3)
-        self.assertEqual(op.symbol, '/')
-
-if __name__ == '__main__':
-    unittest.main()
+def test_divide_zero():
+    op = get_operation("divide")
+    with pytest.raises(OperationError):
+        op.execute(1, 0)

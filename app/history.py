@@ -1,25 +1,29 @@
-from typing import List, Optional
+# app/history.py 
+import pandas as pd
+import os
 from .calculation import Calculation
-from .calculator_config import config
+from dotenv import load_dotenv
+load_dotenv()
 
-class History:
-    def __init__(self):
-        self._calculations: List[Calculation] = []
+HIST_DIR = os.getenv("CALCULATOR_HISTORY_DIR", "./data")
+os.makedirs(HIST_DIR, exist_ok=True)
+HIST_FILE = os.path.join(HIST_DIR, os.getenv("CALCULATOR_HISTORY_FILE", "history.csv"))
 
-    def add_calculation(self, calculation: Calculation):
-        """Add a calculation to history."""
-        self._calculations.append(calculation)
-        if len(self._calculations) > config.max_history_size:
-            self._calculations.pop(0)
+class Observer:
+    def update(self, calculation: Calculation):
+        raise NotImplementedError
 
-    def get_calculations(self) -> List[Calculation]:
-        """Get all calculations from history."""
-        return self._calculations.copy()
+class LoggingObserver(Observer):
+    def __init__(self, logger):
+        self.logger = logger
+    def update(self, calculation):
+        self.logger.info(f"{calculation.operation} {calculation.a},{calculation.b} => {calculation.result}")
 
-    def clear(self):
-        """Clear the history."""
-        self._calculations.clear()
-
-    def get_last_calculation(self) -> Optional[Calculation]:
-        """Get the most recent calculation."""
-        return self._calculations[-1] if self._calculations else None
+class AutoSaveObserver(Observer):
+    def __init__(self, filepath=HIST_FILE):
+        self.filepath = filepath
+    def update(self, calculation):
+        df = pd.DataFrame([calculation.to_dict()])
+        # append to CSV; if file doesn't exist create header
+        header = not os.path.exists(self.filepath)
+        df.to_csv(self.filepath, mode='a', index=False, header=header)
