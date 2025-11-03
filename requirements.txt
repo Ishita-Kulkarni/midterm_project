@@ -3,3 +3,4 @@ pandas
 pytest
 pytest-cov
 coverage
+colorama>=0.4.6
