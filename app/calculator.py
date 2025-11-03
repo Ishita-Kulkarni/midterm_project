@@ -4,7 +4,9 @@ from .history import LoggingObserver, AutoSaveObserver
 from .logger import logger
 from .calculation import Calculation
 from .calculator_memento import Caretaker
+from app.operations import Operation 
 from .exceptions import ValidationError
+from .exceptions import DivisionByZeroError
 from dotenv import load_dotenv
 import os
 import pandas as pd
@@ -46,7 +48,8 @@ class Calculator:
         result = operation.execute(a, b)
         if isinstance(result, float):
             result = round(result, PRECISION)
-        calc = Calculation(op_name, a, b, result)
+        calc = Calculation(a, b, operation)
+        calc._result = result
         # save state into memento before mutation
         self.caretaker.save(self.history)
         self.history.append(calc)
@@ -77,6 +80,20 @@ class Calculator:
         df = pd.read_csv(filepath)
         loaded = []
         for _, row in df.iterrows():
-            loaded.append(Calculation(row['operation'], row['a'], row['b'], row['result'], row.get('timestamp')))
+            # Use only the constructor args Calculation(a, b, operation)
+            # Set _result and timestamp after creation
+            calc = Calculation(row['a'], row['b'], row['operation'])
+            if hasattr(calc, '_result'):
+                calc._result = row['result']
+            if hasattr(calc, 'timestamp') and 'timestamp' in row:
+                calc.timestamp = row['timestamp']
+            loaded.append(calc)
         self.history = loaded
         return self.history
+    def calculate(self, a, b, operation: Operation):
+        # Accepts operation as an Operation instance
+        result = operation.execute(a, b)
+        calc = Calculation(a, b, operation)
+        calc._result = result  # Set result for compatibility
+        self.history.append(calc)
+        return result

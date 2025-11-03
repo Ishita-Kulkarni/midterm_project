@@ -1,31 +1,49 @@
 import unittest
 from app.calculator import Calculator
 from app.operations import Addition, Subtraction, Multiplication, Division
-from app.exceptions import CalculatorError, DivisionByZeroError
+from app.exceptions import DivisionByZeroError
 
 class TestCalculator(unittest.TestCase):
+
     def setUp(self):
-        self.calculator = Calculator()
+        """Create a Calculator instance for each test."""
+        self.calc = Calculator()
 
     def test_addition(self):
-        result = self.calculator.calculate(2, 3, Addition())
+        result = self.calc.calculate(2, 3, Addition())
         self.assertEqual(result, 5)
 
     def test_subtraction(self):
-        result = self.calculator.calculate(5, 3, Subtraction())
+        result = self.calc.calculate(5, 3, Subtraction())
         self.assertEqual(result, 2)
 
     def test_multiplication(self):
-        result = self.calculator.calculate(4, 3, Multiplication())
+        result = self.calc.calculate(4, 3, Multiplication())
         self.assertEqual(result, 12)
 
     def test_division(self):
-        result = self.calculator.calculate(6, 2, Division())
-        self.assertEqual(result, 3)
+        result = self.calc.calculate(10, 2, Division())
+        self.assertEqual(result, 5)
 
-    def test_division_by_zero(self):
+    def test_division_by_zero_raises(self):
         with self.assertRaises(DivisionByZeroError):
-            self.calculator.calculate(5, 0, Division())
+            self.calc.calculate(5, 0, Division())
 
-if __name__ == '__main__':
+    def test_history_tracking(self):
+        # Initially history should be empty
+        self.assertEqual(len(self.calc.history), 0)
+
+        # Perform a calculation and check history
+        self.calc.calculate(2, 3, Addition())
+        self.assertEqual(len(self.calc.history), 1)
+        self.assertEqual(self.calc.history[0].execute(), 5)
+
+    def test_multiple_history_entries(self):
+        self.calc.calculate(2, 3, Addition())
+        self.calc.calculate(5, 2, Subtraction())
+        self.assertEqual(len(self.calc.history), 2)
+        self.assertEqual(self.calc.history[0].execute(), 5)
+        self.assertEqual(self.calc.history[1].execute(), 3)
+
+if __name__ == "__main__":
     unittest.main()

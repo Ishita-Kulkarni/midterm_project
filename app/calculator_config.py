@@ -8,6 +8,7 @@ class CalculatorConfig:
     max_history_size: int = 100
     log_file_path: str = "calculator.log"
     enable_logging: bool = True
+    HISTORY_LIMIT: int = 100 
 
     @classmethod
     def from_env(cls) -> 'CalculatorConfig':

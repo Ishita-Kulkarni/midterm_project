@@ -9,6 +9,21 @@ calc.register(LoggingObserver(logger))
 if os.getenv("CALCULATOR_AUTO_SAVE", "true").lower() == "true":
     calc.register(AutoSaveObserver())
 
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Cannot divide by zero")
+    return a / b
+
+
 def print_help():
     print("Commands: add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff, history, clear, undo, redo, save, load, help, exit")
 
@@ -43,8 +58,11 @@ def repl():
             if len(parts) < 3:
                 print("Usage: <operation> <a> <b>"); continue
             a, b = parts[1], parts[2]
-            res = calc.perform(cmd, a, b)
-            print(f"= {res.result}")
+            try:
+                res = calc.perform(cmd, a, b)
+                print(f"= {res.result}")
+            except Exception as e:
+                print("Error:", e)
         except Exception as e:
             print("Error:", e)
 

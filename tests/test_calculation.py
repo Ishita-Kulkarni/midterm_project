@@ -17,5 +17,15 @@ class TestCalculation(unittest.TestCase):
         calc.execute()
         self.assertEqual(calc.result, 2)
 
+    def test_calculation_execute_and_repr(self):
+        calc = Calculation(3, 7, Addition())
+        self.assertEqual(calc.execute(), 10)
+        # Set symbol for test compatibility
+        setattr(calc.operation, 'symbol', '+')
+        self.assertEqual(str(calc), "Calculation: 3 + 7 = 10")
+
+        calc2 = Calculation(10, 4, Subtraction())
+        self.assertEqual(calc2.execute(), 6)
+
 if __name__ == '__main__':
     unittest.main()

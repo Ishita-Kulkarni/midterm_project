@@ -9,6 +9,29 @@ HIST_DIR = os.getenv("CALCULATOR_HISTORY_DIR", "./data")
 os.makedirs(HIST_DIR, exist_ok=True)
 HIST_FILE = os.path.join(HIST_DIR, os.getenv("CALCULATOR_HISTORY_FILE", "history.csv"))
 
+class History:
+    def __init__(self):
+        self.entries = []
+
+    def add_entry(self, expression, result=None):
+        self.entries.append((expression, result))
+
+    def get_entries(self):
+        return self.entries
+
+    def get_history(self):
+        """Return just the expressions for easier testing."""
+        return [expr for expr, _ in self.entries]
+
+    def clear(self):
+        self.entries.clear()
+
+    def clear_history(self):
+        """Alias for clear(), for test compatibility."""
+        self.clear()
+
+
+
 class Observer:
     def update(self, calculation: Calculation):
         raise NotImplementedError
