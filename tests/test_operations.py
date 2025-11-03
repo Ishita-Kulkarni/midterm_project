@@ -10,7 +10,21 @@ from app.exceptions import OperationError
     ("power", 2, 3, 8),
     ("abs_diff", 5, 2, 3),
 ])
+
 def test_basic_ops(op, a, b, expected):
+    operation = get_operation(op)
+    assert operation.execute(a, b) == expected
+
+
+@pytest.mark.parametrize("op,a,b,expected", [
+    ("root", 27, 3, 3),
+    ("modulus", 10, 3, 1),
+    ("int_divide", 10, 3, 3),
+    ("percent", 2, 4, 50),
+])
+def test_more_ops(op, a, b, expected):
+    operation = get_operation(op)
+    assert operation.execute(a, b) == expected
     operation = get_operation(op)
     assert operation.execute(a, b) == expected
 

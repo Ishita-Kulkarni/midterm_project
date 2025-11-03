@@ -1,2 +1,12 @@
 operation,a,b,result,timestamp
 <app.operations.Addition object at 0x7ac290167e30>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x779660694770>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x7192fb2309b0>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x7a51806d9af0>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x7bc949b59910>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x7987a93b9d90>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x747d2dba5910>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x793e466032f0>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x78a0914602f0>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x71287ae8d5b0>,1.0,2.0,3.0,
+<app.operations.Addition object at 0x74859223c410>,1.0,2.0,3.0,

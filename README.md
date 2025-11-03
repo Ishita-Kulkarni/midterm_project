@@ -4,7 +4,7 @@ A feature-rich calculator implementation in Python that demonstrates various des
 
 ## Features
 
-- Basic arithmetic operations (addition, subtraction, multiplication, division)
+- Arithmetic operations 
 - Operation history tracking
 - Undo/Redo functionality using the Memento pattern
 - Configurable logging
@@ -30,7 +30,24 @@ project_root/
 │   └── logger.py           # Logging functionality
 ├── tests/
 │   ├── __init__.py
+│   ├── test_additional_coverage.py
+│   ├── test_boost_coverage.py
+│   ├── test_calc_repl_full.py
+│   ├── test_calc_repl.py
+│   ├── test_calc.py
+│   ├── test_calculation_extra.py
+│   ├── test_calculator_memento_edge.py
+│   ├── test_calculator_memento.py
+│   ├── test_calculator_observers.py
+│   ├── test_calculator_persistence.py
 │   ├── test_calculator.py
+│   ├── test_coverage.py
+│   ├── test_history_edge.py
+│   ├── test_history_extra.py
+│   ├── test_input_validators_extra.py
+│   ├── test_input_validators.py
+│   ├── test_memento.py
+│   ├── test_operations_extra.py
 │   ├── test_calculation.py
 │   └── test_operations.py
 ```
@@ -71,7 +88,3 @@ pytest tests/
 coverage run -m pytest
 coverage report
 ```
-
-## License
-
-MIT License
